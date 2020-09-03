@@ -6,10 +6,33 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2020-09-02T12:39:29.541Z</updated>
+  <updated>2020-09-03T10:52:33.209Z</updated>
   <id>http://example.com/</id>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>JDBC</title>
+    <link href="http://example.com/2020/09/03/jdbc/"/>
+    <id>http://example.com/2020/09/03/jdbc/</id>
+    <published>2020-09-03T08:55:58.000Z</published>
+    <updated>2020-09-03T10:52:33.209Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h2 id=&quot;JDBC-概述&quot;&gt;&lt;a href=&quot;#JDBC-概述&quot; class=&quot;headerlink&quot; title=&quot;JDBC 概述&quot;&gt;&lt;/a&gt;JDBC 概述&lt;/h2&gt;&lt;h3 id=&quot;1-1数据的持久化&quot;&gt;&lt;a href=&quot;#1-1数据的持久化&quot;</summary>
+        
+      
+    
+    
+    
+    <category term="数据库" scheme="http://example.com/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/"/>
+    
+    
+  </entry>
   
   <entry>
     <title>test</title>
