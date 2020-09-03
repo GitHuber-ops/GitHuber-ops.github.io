@@ -581,14 +581,14 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    224
+                    914
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    1 分
+                    4 分
                 </div>
                 
 
@@ -603,7 +603,7 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h2 id="JDBC-概述"><a href="#JDBC-概述" class="headerlink" title="JDBC 概述"></a>JDBC 概述</h2><h3 id="1-1数据的持久化"><a href="#1-1数据的持久化" class="headerlink" title="1.1数据的持久化"></a>1.1数据的持久化</h3><ul>
+                <h2 id="JDBC-概述"><a href="#JDBC-概述" class="headerlink" title="JDBC 概述"></a>JDBC 概述</h2><h3 id="数据的持久化"><a href="#数据的持久化" class="headerlink" title="数据的持久化"></a>数据的持久化</h3><ul>
 <li>把数据存储在可掉电设备中以供以后使用</li>
 <li>主要是存储在关系型数据库中</li>
 </ul>
@@ -618,9 +618,112 @@
 <li>JDBC会调用相应数据库的驱动来完成对数据库的操作</li>
 <li>JDBC包含了面向应用的API和面向数据库的API</li>
 <li>面向接口的编程思想</li>
-<li>具体过程<img src="%5Cimages%5CJDBC%5CJDBCDescription.jpg"></li>
+<li>具体过程<img src="/images/JDBC/JDBCDescription.jpg"></li>
 <li>Statement完成具体的操作</li>
-<li></li>
+<li>Driver（驱动）接口提供了取得链接的方法</li>
+</ul>
+<h3 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h3><h6 id="实现方式1："><a href="#实现方式1：" class="headerlink" title="实现方式1："></a>实现方式1：</h6><pre class=" language-java"><code class="language-java"><span class="token annotation punctuation">@Test</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">testConnection1</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> SQLException <span class="token punctuation">{</span>
+        Driver driver <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">com<span class="token punctuation">.</span>mysql<span class="token punctuation">.</span>cj<span class="token punctuation">.</span>jdbc<span class="token punctuation">.</span>Driver</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        String url <span class="token operator">=</span> <span class="token string">"jdbc:mysql://localhost:3306/JDBCLearning?serverTimezone=UTC"</span><span class="token punctuation">;</span>
+
+        Properties info <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Properties</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        info<span class="token punctuation">.</span><span class="token function">setProperty</span><span class="token punctuation">(</span><span class="token string">"user"</span><span class="token punctuation">,</span> <span class="token string">"root"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        info<span class="token punctuation">.</span><span class="token function">setProperty</span><span class="token punctuation">(</span><span class="token string">"password"</span><span class="token punctuation">,</span><span class="token string">"123456Asdfgh"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        Connection conn <span class="token operator">=</span> driver<span class="token punctuation">.</span><span class="token function">connect</span><span class="token punctuation">(</span>url<span class="token punctuation">,</span> info<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>conn<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token punctuation">}</span></code></pre>
+<p>注：未加?serverTimezone=UTC时可能会出现报错</p>
+<h6 id="实现方式2："><a href="#实现方式2：" class="headerlink" title="实现方式2："></a>实现方式2：</h6><pre class=" language-java"><code class="language-java">        <span class="token comment" spellcheck="true">//使用反射获得实现类对象，增加可修改性</span>
+        Class<span class="token operator">&lt;</span><span class="token operator">?</span><span class="token operator">></span> clazz <span class="token operator">=</span> Class<span class="token punctuation">.</span><span class="token function">forName</span><span class="token punctuation">(</span><span class="token string">"com.mysql.cj.jdbc.Driver"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        Driver driver <span class="token operator">=</span> <span class="token punctuation">(</span>Driver<span class="token punctuation">)</span>clazz<span class="token punctuation">.</span><span class="token function">newInstance</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        String url <span class="token operator">=</span> <span class="token string">"jdbc:mysql://localhost:3306/JDBCLearning?serverTimezone=UTC"</span><span class="token punctuation">;</span>
+
+        Properties info <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Properties</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        info<span class="token punctuation">.</span><span class="token function">setProperty</span><span class="token punctuation">(</span><span class="token string">"user"</span><span class="token punctuation">,</span> <span class="token string">"root"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        info<span class="token punctuation">.</span><span class="token function">setProperty</span><span class="token punctuation">(</span><span class="token string">"password"</span><span class="token punctuation">,</span><span class="token string">"123456Asdfgh"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        Connection conn <span class="token operator">=</span> driver<span class="token punctuation">.</span><span class="token function">connect</span><span class="token punctuation">(</span>url<span class="token punctuation">,</span> info<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>conn<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<h6 id="实现方式3："><a href="#实现方式3：" class="headerlink" title="实现方式3："></a>实现方式3：</h6><pre class=" language-java"><code class="language-java">        <span class="token comment" spellcheck="true">//使用反射获得实现类对象</span>
+        Class<span class="token operator">&lt;</span><span class="token operator">?</span><span class="token operator">></span> clazz <span class="token operator">=</span> Class<span class="token punctuation">.</span><span class="token function">forName</span><span class="token punctuation">(</span><span class="token string">"com.mysql.cj.jdbc.Driver"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        Driver driver <span class="token operator">=</span> <span class="token punctuation">(</span>Driver<span class="token punctuation">)</span>clazz<span class="token punctuation">.</span><span class="token function">newInstance</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        String url <span class="token operator">=</span> <span class="token string">"jdbc:mysql://localhost:3306/JDBCLearning"</span><span class="token punctuation">;</span>
+        String user <span class="token operator">=</span> <span class="token string">"root"</span><span class="token punctuation">;</span>
+        String password <span class="token operator">=</span> <span class="token string">"123456Asdfgh"</span><span class="token punctuation">;</span>
+
+        <span class="token comment" spellcheck="true">//注册驱动</span>
+        DriverManager<span class="token punctuation">.</span><span class="token function">registerDriver</span><span class="token punctuation">(</span>driver<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        Connection conn <span class="token operator">=</span> DriverManager<span class="token punctuation">.</span><span class="token function">getConnection</span><span class="token punctuation">(</span>url<span class="token punctuation">,</span> user<span class="token punctuation">,</span> password<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>conn<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<h6 id="实现方式4：-boom"><a href="#实现方式4：-boom" class="headerlink" title="实现方式4：:boom:"></a>实现方式4：:boom:</h6><pre class=" language-java"><code class="language-java">        String url <span class="token operator">=</span> <span class="token string">"jdbc:mysql://localhost:3306/JDBCLearning"</span><span class="token punctuation">;</span>
+        String user <span class="token operator">=</span> <span class="token string">"root"</span><span class="token punctuation">;</span>
+        String password <span class="token operator">=</span> <span class="token string">"123456Asdfgh"</span><span class="token punctuation">;</span>
+
+        <span class="token comment" spellcheck="true">//加载驱动，对应的静态代码块会被执行</span>
+        Class<span class="token punctuation">.</span><span class="token function">forName</span><span class="token punctuation">(</span><span class="token string">"com.mysql.cj.jdbc.Driver"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">//        Driver driver = (Driver)clazz.newInstance();</span>
+<span class="token comment" spellcheck="true">//        //注册驱动</span>
+<span class="token comment" spellcheck="true">//        DriverManager.registerDriver(driver);</span>
+
+        Connection conn <span class="token operator">=</span> DriverManager<span class="token punctuation">.</span><span class="token function">getConnection</span><span class="token punctuation">(</span>url<span class="token punctuation">,</span> user<span class="token punctuation">,</span> password<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>conn<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p>通过查看com.mysql.cj.jdbc.Driver的源代码</p>
+<pre class=" language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Driver</span> <span class="token keyword">extends</span> <span class="token class-name">NonRegisteringDriver</span> <span class="token keyword">implements</span> <span class="token class-name">java<span class="token punctuation">.</span>sql<span class="token punctuation">.</span>Driver</span> <span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token function">Driver</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> SQLException <span class="token punctuation">{</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">static</span> <span class="token punctuation">{</span>
+        <span class="token keyword">try</span> <span class="token punctuation">{</span>
+            DriverManager<span class="token punctuation">.</span><span class="token function">registerDriver</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Driver</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">SQLException</span> var1<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">RuntimeException</span><span class="token punctuation">(</span><span class="token string">"Can't register driver!"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre>
+<p>不难发现，在此段代码中的静态代码块会在Driver对象被创建时执行，也即会自行创建一个驱动。</p>
+<p>其实这里的Class.forName(“com.mysql.cj.jdbc.Driver”)甚至也可以省略，由于，MySQL的驱动META-INF/service/java.sql.Driver中已经记录了MySQL的驱动名称，但是，<strong>极其不推荐这样做</strong>，因为这样的做法不一定对所有的数据库（如Oracle）均有效。</p>
+<h6 id="实现方式6："><a href="#实现方式6：" class="headerlink" title="实现方式6："></a>实现方式6：</h6><pre class=" language-java"><code class="language-java">        <span class="token comment" spellcheck="true">//读取配置文件的信息</span>
+        InputStream inputStream <span class="token operator">=</span> ConnectionTest<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">.</span><span class="token function">getClassLoader</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getResourceAsStream</span><span class="token punctuation">(</span><span class="token string">"src/jdbc.properties"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        Properties properties <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Properties</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        properties<span class="token punctuation">.</span><span class="token function">load</span><span class="token punctuation">(</span>inputStream<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        String user<span class="token operator">=</span>properties<span class="token punctuation">.</span><span class="token function">getProperty</span><span class="token punctuation">(</span><span class="token string">"user"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        String password<span class="token operator">=</span>properties<span class="token punctuation">.</span><span class="token function">getProperty</span><span class="token punctuation">(</span><span class="token string">"password"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        String url<span class="token operator">=</span>properties<span class="token punctuation">.</span><span class="token function">getProperty</span><span class="token punctuation">(</span><span class="token string">"url"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        String driverClass<span class="token operator">=</span>properties<span class="token punctuation">.</span><span class="token function">getProperty</span><span class="token punctuation">(</span><span class="token string">"driverClass"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment" spellcheck="true">//加载驱动</span>
+        Class<span class="token punctuation">.</span><span class="token function">forName</span><span class="token punctuation">(</span>driverClass<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment" spellcheck="true">//获取连接</span>
+        Connection connection <span class="token operator">=</span> DriverManager<span class="token punctuation">.</span><span class="token function">getConnection</span><span class="token punctuation">(</span>url<span class="token punctuation">,</span> user<span class="token punctuation">,</span> password<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>connection<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p>通过将参数单独配置在配置文件中，进而可以进一步提高代码的可重用性，实现了数据与代码的分离，降低了代码耦合性。</p>
+<p>同时，这种方式也避免了修改文件时重新打包造成的时间浪费。</p>
+<h3 id="使用PreparedStatement实现CRUD操作"><a href="#使用PreparedStatement实现CRUD操作" class="headerlink" title="使用PreparedStatement实现CRUD操作"></a>使用PreparedStatement实现CRUD操作</h3><ul>
+<li><p>三种调用方式的区别：</p>
+<ul>
+<li>Statement：用于执行静态 SQL 语句并返回它所生成结果的对象。</li>
+<li>PreparedStatement：SQL 语句被预编译并存储在此对象中，可以使用此对象多次高效地执行该语句。</li>
+<li>CallableStatement：用于执行 SQL 存储过程</li>
+</ul>
+</li>
+<li><p>Statement的弊端：</p>
+<ul>
+<li><p>SQL注入问题：SELECT user,password FROM user_table WHERE user = ‘“ + user + “‘ AND PASSWORD = ‘“ + “password”‘</p>
+<p>​                           SELECT user,password FROM user_table WHERE user = ‘1’ or ‘ AND PASSWORD = ‘=1 or ‘1’ = ‘1’</p>
+</li>
+</ul>
+</li>
 </ul>
 <script>
         document.querySelectorAll('.github-emoji')
@@ -885,7 +988,7 @@
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            JDBC 概述1.1数据的持久化
+                            JDBC 概述数据的持久化
 把数据存储在可掉电设备中以供以后使用
 主要是存储在关系型数据库中
 
@@ -893,7 +996,7 @@ Java中的数据存储技术
 JDBC
 JDO
 第三方O/R工具，例如Hibernate，Mybatis等
-JDBC是Java访问数据库的基石
+JDBC是Java访问数据库的基石，其他
                         
                     </div>
                     <div class="publish-info">
@@ -1156,7 +1259,7 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
             <br>
             
             &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                class="white-color">401</span>&nbsp;字
+                class="white-color">1.1k</span>&nbsp;字
             
             
             
