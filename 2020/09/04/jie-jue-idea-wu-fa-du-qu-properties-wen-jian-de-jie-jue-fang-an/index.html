@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="test, MJK">
+    <meta name="keywords" content="解决idea无法读取properties文件的解决方案, MJK">
     <meta name="description" content="description">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>test | MJK</title>
+    <title>解决idea无法读取properties文件的解决方案 | MJK</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -429,12 +429,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/4.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/0.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">test</h1>
+                    <h1 class="description center-align post-title">解决idea无法读取properties文件的解决方案</h1>
                 </div>
             </div>
         </div>
@@ -556,6 +556,15 @@
                 </div>
                 <div class="col s5 right-align">
                     
+                    <div class="post-cate">
+                        <i class="fas fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/idea%E4%BD%BF%E7%94%A8/" class="post-category">
+                                idea使用
+                            </a>
+                        
+                    </div>
+                    
                 </div>
             </div>
 
@@ -563,7 +572,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2020-09-02
+                    2020-09-04
                 </div>
                 
 
@@ -572,14 +581,14 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    52
+                    482
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    1 分
+                    2 分
                 </div>
                 
 
@@ -594,7 +603,37 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <script>
+                <h3 id="解决idea无法读取properties文件的解决方案"><a href="#解决idea无法读取properties文件的解决方案" class="headerlink" title="解决idea无法读取properties文件的解决方案"></a>解决idea无法读取properties文件的解决方案</h3><p>最近在学JDBC连接的时候遇到的idea无法读取properties文件的问题，一直在报无法读取文件的错误，后经查询发现，idea与eclipse不同，idea有着 <a target="_blank" rel="noopener" href="https://www.jetbrains.com/help/idea/2016.2/configuring-content-roots.html">Content Roots</a>的概念。需要为每一个folder配置相应的Content Roots。Content Roots包括resources、sources、tests等。</p>
+<p>![](D:\program\blog\source\images\解决idea无法读取properties文件的解决方案\content Root说明.png)</p>
+<ul>
+<li>java文件夹被标注为Sources，那么下面的所有子文件夹均为Sources，编译后生成.class文件。</li>
+<li>Resources文件夹被标注为Resources，那么在该文件夹下的配置文件在编译时会自动复制到编译文件夹中。</li>
+</ul>
+<p>那么对于idea来说，就有以下几种解决方案。</p>
+<ol>
+<li>将配置文件放到Resources文件夹中，在代码中添加配置文件的虚拟路径。选中文件，右键-Copy Reference，就可以获取到文件的虚拟路径。</li>
+<li>把配置文件放在com.zjut.ssm.config包中，修改config文件夹的Content Roots为Resources，那么编译后，代码也能识别出来。</li>
+</ol>
+<p>以上两种解决方案适用于make project方式来编译项目。</p>
+<p>如果是maven项目。还可以通过配置pom.xml来实现。</p>
+<pre class=" language-xml"><code class="language-xml"> <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>build</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>finalName</span><span class="token punctuation">></span></span>springmvc-study<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>finalName</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>resources</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>resource</span><span class="token punctuation">></span></span>
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>directory</span><span class="token punctuation">></span></span>${basedir}/src/main/java<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>directory</span><span class="token punctuation">></span></span>
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>includes</span><span class="token punctuation">></span></span>
+                <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>include</span><span class="token punctuation">></span></span>**/*.properties<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>include</span><span class="token punctuation">></span></span>
+                <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>include</span><span class="token punctuation">></span></span>**/*.xml<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>include</span><span class="token punctuation">></span></span>
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>includes</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>resource</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>resource</span><span class="token punctuation">></span></span>
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>directory</span><span class="token punctuation">></span></span>${basedir}/src/main/resources<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>directory</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>resource</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>resources</span><span class="token punctuation">></span></span>
+ <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>build</span><span class="token punctuation">></span></span>123456789101112131415</code></pre>
+<p>这样不用对idea设置，也可以使用maven的编译命令编译项目，并复制配置文件到编译好的文件夹中。</p>
+<p>最后，再修改完成了以后，不要忘记重新构建<strong>整个项目</strong>哦~</p>
+<script>
         document.querySelectorAll('.github-emoji')
           .forEach(el => {
             if (!el.dataset.src) { return; }
@@ -637,7 +676,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://mjkbolg.com/2020/09/02/test/">http://mjkbolg.com/2020/09/02/test/</a>
+                    <a href="http://mjkbolg.com/2020/09/04/jie-jue-idea-wu-fa-du-qu-properties-wen-jian-de-jie-jue-fang-an/">http://mjkbolg.com/2020/09/04/jie-jue-idea-wu-fa-du-qu-properties-wen-jian-de-jie-jue-fang-an/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -840,9 +879,52 @@
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
+            <div class="card">
+                <a href="/2020/09/04/jie-jue-idea-wu-fa-du-qu-properties-wen-jian-de-jie-jue-fang-an/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/0.jpg" class="responsive-img" alt="解决idea无法读取properties文件的解决方案">
+                        
+                        <span class="card-title">解决idea无法读取properties文件的解决方案</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            解决idea无法读取properties文件的解决方案最近在学JDBC连接的时候遇到的idea无法读取properties文件的问题，一直在报无法读取文件的错误，后经查询发现，idea与eclipse不同，idea有着 Content Ro
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-09-04
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/idea%E4%BD%BF%E7%94%A8/" class="post-category">
+                                    idea使用
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
             <div class="card">
                 <a href="/2020/09/03/jdbc/">
                     <div class="card-image">
@@ -868,9 +950,9 @@ JDBC是Java访问数据库的基石，其他
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2020-09-03
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-09-03
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
@@ -879,43 +961,6 @@ JDBC是Java访问数据库的基石，其他
                                     数据库
                                 </a>
                             
-                            
-                        </span>
-                    </div>
-                </div>
-                
-            </div>
-        </div>
-        
-        
-        <div class="article col s12 m6" data-aos="fade-up">
-            <div class="article-badge right-badge text-color">
-                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
-            </div>
-            <div class="card">
-                <a href="/2020/09/02/hello-world/">
-                    <div class="card-image">
-                        
-                        
-                        <img src="/medias/featureimages/0.jpg" class="responsive-img" alt="Hello World">
-                        
-                        <span class="card-title">Hello World</span>
-                    </div>
-                </a>
-                <div class="card-content article-content">
-                    <div class="summary block-with-text">
-                        
-                            Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hex
-                        
-                    </div>
-                    <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2020-09-02
-                            </span>
-                        <span class="publish-author">
-                            
-                            <i class="fas fa-user fa-fw"></i>
-                            Dale Mo
                             
                         </span>
                     </div>
