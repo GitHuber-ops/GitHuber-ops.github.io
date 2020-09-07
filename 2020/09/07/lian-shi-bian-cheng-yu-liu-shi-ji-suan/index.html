@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="解决idea无法读取properties文件的解决方案, MJK">
+    <meta name="keywords" content="链式编程与流式计算基础, MJK">
     <meta name="description" content="description">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>解决idea无法读取properties文件的解决方案 | MJK</title>
+    <title>链式编程与流式计算基础 | MJK</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -429,12 +429,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/0.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/2.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">解决idea无法读取properties文件的解决方案</h1>
+                    <h1 class="description center-align post-title">链式编程与流式计算基础</h1>
                 </div>
             </div>
         </div>
@@ -549,9 +549,13 @@
             <div class="row tag-cate">
                 <div class="col s7">
                     
-                          <div class="article-tag">
-                            <span class="chip bg-color">无标签</span>
-                          </div>
+                    <div class="article-tag">
+                        
+                            <a href="/tags/Java%E9%AB%98%E7%BA%A7-Java%E5%90%8E%E7%AB%AF/">
+                                <span class="chip bg-color">Java高级 Java后端</span>
+                            </a>
+                        
+                    </div>
                     
                 </div>
                 <div class="col s5 right-align">
@@ -559,8 +563,8 @@
                     <div class="post-cate">
                         <i class="fas fa-bookmark fa-fw icon-category"></i>
                         
-                            <a href="/categories/idea%E4%BD%BF%E7%94%A8/" class="post-category">
-                                idea使用
+                            <a href="/categories/Java%E9%AB%98%E7%BA%A7/" class="post-category">
+                                Java高级
                             </a>
                         
                     </div>
@@ -572,7 +576,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2020-09-04
+                    2020-09-07
                 </div>
                 
 
@@ -581,14 +585,14 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    482
+                    69
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    2 分
+                    1 分
                 </div>
                 
 
@@ -603,37 +607,7 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h3 id="解决idea无法读取properties文件的解决方案"><a href="#解决idea无法读取properties文件的解决方案" class="headerlink" title="解决idea无法读取properties文件的解决方案"></a>解决idea无法读取properties文件的解决方案</h3><p>最近在学JDBC连接的时候遇到的idea无法读取properties文件的问题，一直在报无法读取文件的错误，后经查询发现，idea与eclipse不同，idea有着 <a target="_blank" rel="noopener" href="https://www.jetbrains.com/help/idea/2016.2/configuring-content-roots.html">Content Roots</a>的概念。需要为每一个folder配置相应的Content Roots。Content Roots包括resources、sources、tests等。</p>
-<p>![](D:\program\blog\source\images\解决idea无法读取properties文件的解决方案\content Root说明.png)</p>
-<ul>
-<li>java文件夹被标注为Sources，那么下面的所有子文件夹均为Sources，编译后生成.class文件。</li>
-<li>Resources文件夹被标注为Resources，那么在该文件夹下的配置文件在编译时会自动复制到编译文件夹中。</li>
-</ul>
-<p>那么对于idea来说，就有以下几种解决方案。</p>
-<ol>
-<li>将配置文件放到Resources文件夹中，在代码中添加配置文件的虚拟路径。选中文件，右键-Copy Reference，就可以获取到文件的虚拟路径。</li>
-<li>把配置文件放在com.zjut.ssm.config包中，修改config文件夹的Content Roots为Resources，那么编译后，代码也能识别出来。</li>
-</ol>
-<p>以上两种解决方案适用于make project方式来编译项目。</p>
-<p>如果是maven项目。还可以通过配置pom.xml来实现。</p>
-<pre class=" language-xml"><code class="language-xml"> <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>build</span><span class="token punctuation">></span></span>
-    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>finalName</span><span class="token punctuation">></span></span>springmvc-study<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>finalName</span><span class="token punctuation">></span></span>
-    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>resources</span><span class="token punctuation">></span></span>
-        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>resource</span><span class="token punctuation">></span></span>
-            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>directory</span><span class="token punctuation">></span></span>${basedir}/src/main/java<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>directory</span><span class="token punctuation">></span></span>
-            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>includes</span><span class="token punctuation">></span></span>
-                <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>include</span><span class="token punctuation">></span></span>**/*.properties<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>include</span><span class="token punctuation">></span></span>
-                <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>include</span><span class="token punctuation">></span></span>**/*.xml<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>include</span><span class="token punctuation">></span></span>
-            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>includes</span><span class="token punctuation">></span></span>
-        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>resource</span><span class="token punctuation">></span></span>
-        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>resource</span><span class="token punctuation">></span></span>
-            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>directory</span><span class="token punctuation">></span></span>${basedir}/src/main/resources<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>directory</span><span class="token punctuation">></span></span>
-        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>resource</span><span class="token punctuation">></span></span>
-    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>resources</span><span class="token punctuation">></span></span>
- <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>build</span><span class="token punctuation">></span></span>123456789101112131415</code></pre>
-<p>这样不用对idea设置，也可以使用maven的编译命令编译项目，并复制配置文件到编译好的文件夹中。</p>
-<p>最后，再修改完成了以后，不要忘记重新构建<strong>整个项目</strong>哦~</p>
-<script>
+                <h1 id="链式编程与流式计算基础"><a href="#链式编程与流式计算基础" class="headerlink" title="链式编程与流式计算基础"></a>链式编程与流式计算基础</h1><h2 id="四大函数接口"><a href="#四大函数接口" class="headerlink" title="四大函数接口"></a>四大函数接口</h2><script>
         document.querySelectorAll('.github-emoji')
           .forEach(el => {
             if (!el.dataset.src) { return; }
@@ -676,7 +650,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://mjkbolg.com/2020/09/04/jie-jue-idea-wu-fa-du-qu-properties-wen-jian-de-jie-jue-fang-an/">http://mjkbolg.com/2020/09/04/jie-jue-idea-wu-fa-du-qu-properties-wen-jian-de-jie-jue-fang-an/</a>
+                    <a href="http://mjkbolg.com/2020/09/07/lian-shi-bian-cheng-yu-liu-shi-ji-suan/">http://mjkbolg.com/2020/09/07/lian-shi-bian-cheng-yu-liu-shi-ji-suan/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -713,7 +687,11 @@
                 <div class="post-meta__tag-list" style="display: inline-block;">
                     
                         <div class="article-tag">
-                            <span class="chip bg-color">无标签</span>
+                            
+                                <a href="/tags/Java%E9%AB%98%E7%BA%A7-Java%E5%90%8E%E7%AB%AF/">
+                                    <span class="chip bg-color">Java高级 Java后端</span>
+                                </a>
+                            
                         </div>
                     
                 </div>
@@ -879,40 +857,84 @@
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
             <div class="card">
-                <a href="/2020/09/05/juc/">
+                <a href="/2020/09/07/lian-shi-bian-cheng-yu-liu-shi-ji-suan/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/4.jpg" class="responsive-img" alt="JUC">
+                        <img src="/medias/featureimages/2.jpg" class="responsive-img" alt="链式编程与流式计算基础">
                         
-                        <span class="card-title">JUC</span>
+                        <span class="card-title">链式编程与流式计算基础</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            JUC概述
-JUC全名java.util.concurrent
-
-由三部分构成：
-
-java.util.concurrent
-
-java.util.concurrent.atomic
-
-java.util.concurrent.lock
-
-
+                            链式编程与流式计算基础四大函数接口
+        document.querySelectorAll('.github-emoji')
+          .forEach(el => {
+            if (!el.data
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2020-09-05
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-09-07
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/Java%E9%AB%98%E7%BA%A7/" class="post-category">
+                                    Java高级
+                                </a>
+                            
+                            
                         </span>
+                    </div>
+                </div>
+
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Java%E9%AB%98%E7%BA%A7-Java%E5%90%8E%E7%AB%AF/">
+                        <span class="chip bg-color">Java高级 Java后端</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2020/09/06/java-suo-zong-shu/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/3.jpg" class="responsive-img" alt="Java锁综述">
+                        
+                        <span class="card-title">Java锁综述</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            不可不说的Java“锁”事本文章转自美团技术平台，原文链接：https://tech.meituan.com/2018/11/15/java-lock.html
+前言Java提供了种类丰富的锁，每种锁因其特性的不同，在适当的场景下能够展现出
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-09-06
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
@@ -928,59 +950,10 @@ java.util.concurrent.lock
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/Java-%E5%A4%9A%E7%BA%BF%E7%A8%8B-%E5%B9%B6%E5%8F%91/">
-                        <span class="chip bg-color">Java,多线程,并发</span>
+                    <a href="/tags/%E5%B9%B6%E5%8F%91%E6%8E%A7%E5%88%B6/">
+                        <span class="chip bg-color">并发控制</span>
                     </a>
                     
-                </div>
-                
-            </div>
-        </div>
-        
-        
-        <div class="article col s12 m6" data-aos="fade-up">
-            <div class="article-badge right-badge text-color">
-                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
-            </div>
-            <div class="card">
-                <a href="/2020/09/03/jdbc/">
-                    <div class="card-image">
-                        
-                        
-                        <img src="/medias/featureimages/5.jpg" class="responsive-img" alt="JDBC">
-                        
-                        <span class="card-title">JDBC</span>
-                    </div>
-                </a>
-                <div class="card-content article-content">
-                    <div class="summary block-with-text">
-                        
-                            JDBC 概述数据的持久化
-把数据存储在可掉电设备中以供以后使用
-主要是存储在关系型数据库中
-
-Java中的数据存储技术
-JDBC
-JDO
-第三方O/R工具，例如Hibernate，Mybatis等
-JDBC是Java访问数据库的基石，其他
-                        
-                    </div>
-                    <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2020-09-03
-                            </span>
-                        <span class="publish-author">
-                            
-                            <i class="fas fa-bookmark fa-fw icon-category"></i>
-                            
-                            <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/" class="post-category">
-                                    数据库
-                                </a>
-                            
-                            
-                        </span>
-                    </div>
                 </div>
                 
             </div>

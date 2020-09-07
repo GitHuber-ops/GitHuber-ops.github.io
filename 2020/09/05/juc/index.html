@@ -585,14 +585,14 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    1.9k
+                    2.5k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    8 分
+                    11 分
                 </div>
                 
 
@@ -867,7 +867,7 @@ Lock lock <span class="token operator">=</span> <span class="token keyword">new<
 <span class="token punctuation">}</span></code></pre>
 </li>
 </ul>
-<h2 id="实-现多线程的方法"><a href="#实-现多线程的方法" class="headerlink" title="实 现多线程的方法"></a>实 现多线程的方法</h2><h3 id="1-继承Thread类"><a href="#1-继承Thread类" class="headerlink" title="1.继承Thread类"></a>1.继承Thread类</h3><h3 id="2-实现Runnable接口"><a href="#2-实现Runnable接口" class="headerlink" title="2.实现Runnable接口"></a>2.实现Runnable接口</h3><p>  在Java5以后，多了以下两种新的方式</p>
+<h2 id="实现多线程的方法"><a href="#实现多线程的方法" class="headerlink" title="实现多线程的方法"></a>实现多线程的方法</h2><h3 id="1-继承Thread类"><a href="#1-继承Thread类" class="headerlink" title="1.继承Thread类"></a>1.继承Thread类</h3><h3 id="2-实现Runnable接口"><a href="#2-实现Runnable接口" class="headerlink" title="2.实现Runnable接口"></a>2.实现Runnable接口</h3><p>  在Java5以后，多了以下两种新的方式</p>
 <h3 id="3-实现Callable接口"><a href="#3-实现Callable接口" class="headerlink" title="3.实现Callable接口"></a>3.实现Callable接口</h3><p>Callable与Runnable的异同：</p>
 <ul>
 <li><p>Callable实现call方法，Runnable实现run方法</p>
@@ -877,6 +877,8 @@ Lock lock <span class="token operator">=</span> <span class="token keyword">new<
 <li><p>call有返回值，run无返回值</p>
 </li>
 <li><p>FutureTask</p>
+<p>get方法一般放在最后，因为get在这里会阻塞等待直到线程运行完成</p>
+<p>FutureTask当线程相同时仅会被调用一次</p>
 <pre class=" language-java"><code class="language-java">FutureTask task <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">FutureTask</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Callable</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
     <span class="token annotation punctuation">@Override</span>
     <span class="token keyword">public</span> Object <span class="token function">call</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> Exception <span class="token punctuation">{</span>
@@ -887,6 +889,83 @@ Lock lock <span class="token operator">=</span> <span class="token keyword">new<
 System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>task<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
 </li>
 </ul>
+<ul>
+<li><p>顺序线程执行CountDownLatch</p>
+<pre class=" language-java"><code class="language-java">CountDownLatch countDownLatch <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">CountDownLatch</span><span class="token punctuation">(</span><span class="token number">6</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">//进行减一计数直到减为0时，才能执行await()以后的代码</span>
+CountDownLatch<span class="token punctuation">.</span><span class="token function">countDown</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">//当计数不为0时，在此阻塞</span>
+CountDownLatch<span class="token punctuation">.</span><span class="token function">await</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</li>
+<li><p>加法计数器CyclicBarrier</p>
+<p>与CountDownLatch相似，只是CyclicBarrier当计数加到指定数值时才可以触发，CyclicBarrier的每一个await计数加一</p>
+</li>
+<li><p>信号量Semaphore，Java的Semaphore原理与Linux相似，具体的实现方法为：acquire()与release()。需要注意的是当资源数为1时，Semaphore与synchronized关键字等价</p>
+</li>
+</ul>
+<h2 id="ReadWriteLock"><a href="#ReadWriteLock" class="headerlink" title="ReadWriteLock"></a>ReadWriteLock</h2><p>ReadWriteLock类似于操作系统中的读写者问题，在这里也不再介绍原理而着重于使用</p>
+<pre class=" language-java"><code class="language-java">ReadWriteLock<span class="token punctuation">.</span><span class="token function">readLock</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">lock</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+ReadWriteLock<span class="token punctuation">.</span><span class="token function">readLock</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">unlock</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+ReadWriteLock<span class="token punctuation">.</span><span class="token function">writeLock</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">lock</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+ReadWriteLock<span class="token punctuation">.</span><span class="token function">writeLock</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">unlock</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<h2 id="线程池"><a href="#线程池" class="headerlink" title="线程池"></a>线程池</h2><p><strong>ThreadPoolExecutor</strong></p>
+<pre class=" language-java"><code class="language-java">ExecutorService threadPool1 <span class="token operator">=</span> Executors<span class="token punctuation">.</span><span class="token function">newFixedThreadPool</span><span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+ExecutorService threadPool2 <span class="token operator">=</span> Executors<span class="token punctuation">.</span><span class="token function">newSingleThreadExecutor</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+ExecutorService threadPool3 <span class="token operator">=</span> Executors<span class="token punctuation">.</span><span class="token function">newCachedThreadPool</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+threadPool1<span class="token punctuation">.</span><span class="token function">execute</span><span class="token punctuation">(</span>Runnable<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+threadPool1<span class="token punctuation">.</span><span class="token function">shutdown</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p>上述三个API对应的源码</p>
+<pre class=" language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">static</span> ExecutorService <span class="token function">newFixedThreadPool</span><span class="token punctuation">(</span><span class="token keyword">int</span> nThreads<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">ThreadPoolExecutor</span><span class="token punctuation">(</span>nThreads<span class="token punctuation">,</span> nThreads<span class="token punctuation">,</span> 0L<span class="token punctuation">,</span> TimeUnit<span class="token punctuation">.</span>MILLISECONDS<span class="token punctuation">,</span> <span class="token keyword">new</span> <span class="token class-name">LinkedBlockingQueue</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">public</span> <span class="token keyword">static</span> ExecutorService <span class="token function">newSingleThreadExecutor</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">Executors<span class="token punctuation">.</span>FinalizableDelegatedExecutorService</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">ThreadPoolExecutor</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> 0L<span class="token punctuation">,</span> TimeUnit<span class="token punctuation">.</span>MILLISECONDS<span class="token punctuation">,</span> <span class="token keyword">new</span> <span class="token class-name">LinkedBlockingQueue</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment" spellcheck="true">//newCachedThreadPool中的最大数目过大，可能造成OOM异常</span>
+<span class="token keyword">public</span> <span class="token keyword">static</span> ExecutorService <span class="token function">newCachedThreadPool</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">ThreadPoolExecutor</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">2147483647</span><span class="token punctuation">,</span> 60L<span class="token punctuation">,</span> TimeUnit<span class="token punctuation">.</span>SECONDS<span class="token punctuation">,</span> <span class="token keyword">new</span> <span class="token class-name">SynchronousQueue</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<p><strong>请注意源码中的LinkedBlockingQueue与ThreadPoolExecutor</strong></p>
+<p>实际开发中，并不会使用以上的三个API</p>
+<pre class=" language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token function">ThreadPoolExecutor</span><span class="token punctuation">(</span><span class="token keyword">int</span> corePoolSize<span class="token punctuation">,</span> <span class="token keyword">int</span> maximumPoolSize<span class="token punctuation">,</span> <span class="token keyword">long</span> keepAliveTime<span class="token punctuation">,</span> TimeUnit unit<span class="token punctuation">,</span> BlockingQueue<span class="token operator">&lt;</span>Runnable<span class="token operator">></span> workQueue<span class="token punctuation">,</span> ThreadFactory threadFactory<span class="token punctuation">,</span> RejectedExecutionHandler handler<span class="token punctuation">)</span></code></pre>
+<p>参数理解</p>
+<ol>
+<li><p>corePoolSize：线程池中的常驻核心线程数</p>
+</li>
+<li><p>maximumPoolSize：线程池中的最大线程数</p>
+<p>//计算密集型，默认为CPU核数+1（Runtime.getRunTime().availableProcessors()）</p>
+<p>//IO密集型，默认CPU核数*2</p>
+</li>
+<li><p>keepAliveTime：线程空闲时间大于keepAliveTime会被销毁</p>
+</li>
+<li><p>unit：keepAliveTime的单位</p>
+</li>
+<li><p>workQueue：任务队列，提交但尚未被执行的任务</p>
+</li>
+<li><p>threadFactory：线程工厂，用于创建线程，一般取默认</p>
+</li>
+<li><p>handler：拒绝策略，如何拒绝请求执行的runnable策略</p>
+</li>
+</ol>
+<h4 id="线程池拒绝策略"><a href="#线程池拒绝策略" class="headerlink" title="线程池拒绝策略"></a>线程池拒绝策略</h4><ol>
+<li><p>AbortPolicy：默认方法，直接抛出RejectedExecutionException阻止系统继续运行</p>
+</li>
+<li><p>CallerRunsPolicy：不会抛任务也不会抛异常，而是将某些任务回退到调用者，从而降低新任务的流量</p>
+</li>
+<li><p>DisPolicy：直接抛弃多出的任务</p>
+</li>
+<li><p>DisOldestPolicy：直接抛弃等待时间最久的任务</p>
+</li>
+</ol>
 <h2 id="琐碎的问题"><a href="#琐碎的问题" class="headerlink" title="琐碎的问题"></a>琐碎的问题</h2><ol>
 <li><p>redis：6379<br>MySQL：3306</p>
 </li>
@@ -939,8 +1018,23 @@ System<span class="token punctuation">.</span>out<span class="token punctuation"
 <li><strong>依赖反转原则</strong>（Dependency inversion principle，DIP）</li>
 </ul>
 </li>
+<li><p>Java范型代表的意义</p>
+<ul>
+<li><p>E：Element</p>
+</li>
+<li><p>T：Type</p>
+</li>
+<li><p>K：Key</p>
+</li>
+<li><p>V：Value</p>
+</li>
+<li><p>N：Number</p>
+</li>
+</ul>
+</li>
 </ol>
-<h2 id=""><a href="#" class="headerlink" title=""></a></h2><script>
+<p>11.BlockingQueue中的offer方法和poll方法在功能方面大致与add和remove方法相同，但是，前者在插入/删除失败时返回false/null，后者会抛出异常。put/take如果队列已满/空，则会阻塞直到有空位置。</p>
+<script>
         document.querySelectorAll('.github-emoji')
           .forEach(el => {
             if (!el.dataset.src) { return; }
@@ -1480,7 +1574,7 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
             <br>
             
             &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                class="white-color">20.8k</span>&nbsp;字
+                class="white-color">21.5k</span>&nbsp;字
             
             
             

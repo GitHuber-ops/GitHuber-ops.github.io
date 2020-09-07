@@ -6,7 +6,7 @@
   <link href="http://mjkbolg.com/atom.xml" rel="self"/>
   
   <link href="http://mjkbolg.com/"/>
-  <updated>2020-09-06T05:39:46.165Z</updated>
+  <updated>2020-09-07T11:21:14.595Z</updated>
   <id>http://mjkbolg.com/</id>
   
   <author>
@@ -15,6 +15,31 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>链式编程与流式计算基础</title>
+    <link href="http://mjkbolg.com/2020/09/07/lian-shi-bian-cheng-yu-liu-shi-ji-suan/"/>
+    <id>http://mjkbolg.com/2020/09/07/lian-shi-bian-cheng-yu-liu-shi-ji-suan/</id>
+    <published>2020-09-07T11:07:39.000Z</published>
+    <updated>2020-09-07T11:21:14.595Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1 id=&quot;链式编程与流式计算基础&quot;&gt;&lt;a href=&quot;#链式编程与流式计算基础&quot; class=&quot;headerlink&quot; title=&quot;链式编程与流式计算基础&quot;&gt;&lt;/a&gt;链式编程与流式计算基础&lt;/h1&gt;&lt;h2 id=&quot;四大函数接口&quot;&gt;&lt;a href=&quot;#四大函数接口&quot;</summary>
+        
+      
+    
+    
+    
+    <category term="Java高级" scheme="http://mjkbolg.com/categories/Java%E9%AB%98%E7%BA%A7/"/>
+    
+    
+    <category term="Java高级 Java后端" scheme="http://mjkbolg.com/tags/Java%E9%AB%98%E7%BA%A7-Java%E5%90%8E%E7%AB%AF/"/>
+    
+  </entry>
   
   <entry>
     <title>Java锁综述</title>
@@ -71,7 +96,7 @@
     <link href="http://mjkbolg.com/2020/09/05/juc/"/>
     <id>http://mjkbolg.com/2020/09/05/juc/</id>
     <published>2020-09-05T12:18:01.000Z</published>
-    <updated>2020-09-06T14:33:21.315Z</updated>
+    <updated>2020-09-07T11:07:01.772Z</updated>
     
     
       
