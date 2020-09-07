@@ -585,14 +585,14 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    1.6k
+                    1.9k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    7 分
+                    8 分
                 </div>
                 
 
@@ -867,6 +867,26 @@ Lock lock <span class="token operator">=</span> <span class="token keyword">new<
 <span class="token punctuation">}</span></code></pre>
 </li>
 </ul>
+<h2 id="实-现多线程的方法"><a href="#实-现多线程的方法" class="headerlink" title="实 现多线程的方法"></a>实 现多线程的方法</h2><h3 id="1-继承Thread类"><a href="#1-继承Thread类" class="headerlink" title="1.继承Thread类"></a>1.继承Thread类</h3><h3 id="2-实现Runnable接口"><a href="#2-实现Runnable接口" class="headerlink" title="2.实现Runnable接口"></a>2.实现Runnable接口</h3><p>  在Java5以后，多了以下两种新的方式</p>
+<h3 id="3-实现Callable接口"><a href="#3-实现Callable接口" class="headerlink" title="3.实现Callable接口"></a>3.实现Callable接口</h3><p>Callable与Runnable的异同：</p>
+<ul>
+<li><p>Callable实现call方法，Runnable实现run方法</p>
+</li>
+<li><p>call有异常，run无异常</p>
+</li>
+<li><p>call有返回值，run无返回值</p>
+</li>
+<li><p>FutureTask</p>
+<pre class=" language-java"><code class="language-java">FutureTask task <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">FutureTask</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Callable</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> Object <span class="token function">call</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> Exception <span class="token punctuation">{</span>
+         <span class="token keyword">return</span> null<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">new</span> <span class="token class-name">Thread</span><span class="token punctuation">(</span>task<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>task<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</li>
+</ul>
 <h2 id="琐碎的问题"><a href="#琐碎的问题" class="headerlink" title="琐碎的问题"></a>琐碎的问题</h2><ol>
 <li><p>redis：6379<br>MySQL：3306</p>
 </li>
@@ -894,6 +914,7 @@ Lock lock <span class="token operator">=</span> <span class="token keyword">new<
 
 <span class="token comment" spellcheck="true">//默认大小为16，负载因子为0.75</span>
 <span class="token comment" spellcheck="true">//Map大小达到16*0.75后会自行扩容到2的整数幂</span>
+<span class="token comment" spellcheck="true">//与之对应，ArrayList扩容到原来的1.5倍</span>
 <span class="token keyword">this</span><span class="token punctuation">.</span>map <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">HashMap</span><span class="token punctuation">(</span>Math<span class="token punctuation">.</span><span class="token function">max</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token keyword">int</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token keyword">float</span><span class="token punctuation">)</span>c<span class="token punctuation">.</span><span class="token function">size</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">/</span> <span class="token number">0.75F</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">16</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
 <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">final</span> Object PRESENT <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Object</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
@@ -904,9 +925,19 @@ Lock lock <span class="token operator">=</span> <span class="token keyword">new<
 <p>HashMap源码</p>
 <pre class=" language-java"><code class="language-java"><span class="token keyword">transient</span> HashMap<span class="token punctuation">.</span>Node<span class="token operator">&lt;</span>K<span class="token punctuation">,</span> V<span class="token operator">></span><span class="token punctuation">[</span><span class="token punctuation">]</span> table<span class="token punctuation">;</span>
 <span class="token keyword">transient</span> Set<span class="token operator">&lt;</span>Entry<span class="token operator">&lt;</span>K<span class="token punctuation">,</span> V<span class="token operator">>></span> entrySet<span class="token punctuation">;</span></code></pre>
-<p>HashMap.Node源码</p>
+<p>HashMap.Node源码，同样的hash值对应的节点尾插到一个队列中</p>
 <pre class=" language-java"><code class="language-java">HashMap<span class="token punctuation">.</span>Node<span class="token operator">&lt;</span>K<span class="token punctuation">,</span> V<span class="token operator">></span> next<span class="token punctuation">;</span></code></pre>
+<p>当同一个链表的数据数目超过8以后，链表会转变为一棵红黑树</p>
 <p>没有CopyOnWriteHashMap，但有ConcurrentHashMap</p>
+</li>
+<li><p>设计模式五大原则（SOLID）：</p>
+<ul>
+<li><strong>单一功能原则</strong>（Single responsibility principle）</li>
+<li><strong>开闭原则</strong>（Open close principal）</li>
+<li><strong>里氏替换原则</strong>（Liskov Substitution principle）</li>
+<li><strong>接口隔离原则</strong>（interface-segregation principles）</li>
+<li><strong>依赖反转原则</strong>（Dependency inversion principle，DIP）</li>
+</ul>
 </li>
 </ol>
 <h2 id=""><a href="#" class="headerlink" title=""></a></h2><script>
@@ -1449,7 +1480,7 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
             <br>
             
             &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                class="white-color">20.6k</span>&nbsp;字
+                class="white-color">20.8k</span>&nbsp;字
             
             
             
