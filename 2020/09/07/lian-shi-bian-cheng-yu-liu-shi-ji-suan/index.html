@@ -585,7 +585,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    69
+                    303
                 </div>
                 
 
@@ -607,7 +607,52 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h1 id="链式编程与流式计算基础"><a href="#链式编程与流式计算基础" class="headerlink" title="链式编程与流式计算基础"></a>链式编程与流式计算基础</h1><h2 id="四大函数接口"><a href="#四大函数接口" class="headerlink" title="四大函数接口"></a>四大函数接口</h2><script>
+                <h1 id="链式编程与流式计算基础"><a href="#链式编程与流式计算基础" class="headerlink" title="链式编程与流式计算基础"></a>链式编程与流式计算基础</h1><p>“集合讲的是数据，流讲的是计算”</p>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>有关链式编程与流式计算的具体原理会写在Scala中，在这里以Java中的实现为主。</p>
+<h2 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h2><h3 id="Lombok与链式编程的简单Demo"><a href="#Lombok与链式编程的简单Demo" class="headerlink" title="Lombok与链式编程的简单Demo"></a>Lombok与链式编程的简单Demo</h3><pre class=" language-java"><code class="language-java"><span class="token annotation punctuation">@Data</span>
+<span class="token annotation punctuation">@NoArgsConstructor</span>
+<span class="token annotation punctuation">@AllArgsConstructor</span>
+<span class="token annotation punctuation">@Accessors</span><span class="token punctuation">(</span>chain <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">)</span>
+<span class="token keyword">class</span> <span class="token class-name">User</span> <span class="token punctuation">{</span>
+    <span class="token keyword">private</span> <span class="token keyword">int</span> id<span class="token punctuation">;</span>
+    <span class="token keyword">private</span> String userName<span class="token punctuation">;</span>
+    <span class="token keyword">private</span> <span class="token keyword">int</span> age<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">StreamDemo</span> <span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">new</span> <span class="token class-name">User</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">setUserName</span><span class="token punctuation">(</span><span class="token string">"test"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">setId</span><span class="token punctuation">(</span><span class="token number">12</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">setAge</span><span class="token punctuation">(</span><span class="token number">12</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre>
+<h2 id="四大函数接口"><a href="#四大函数接口" class="headerlink" title="四大函数接口"></a>四大函数接口</h2><p>在java.util.function中定义了以下四大函数式接口</p>
+<ol>
+<li>Consumer<t>                        输入T，无返回值</t></li>
+<li>Supplier<t>                           无输入值，返回T</t></li>
+<li>Function&lt;T, R&gt;                       输入T，返回R</li>
+<li>Predicate<t>                          输入T，返回Booleanf</t></li>
+</ol>
+<p>在java.util.steam中书写了如下规则：</p>
+<pre class=" language-java"><code class="language-java">     <span class="token keyword">int</span> sum <span class="token operator">=</span> widgets<span class="token punctuation">.</span><span class="token function">stream</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+                      <span class="token punctuation">.</span><span class="token function">filter</span><span class="token punctuation">(</span>b <span class="token operator">-</span><span class="token operator">></span> b<span class="token punctuation">.</span><span class="token function">getColor</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">==</span> RED<span class="token punctuation">)</span>
+                      <span class="token punctuation">.</span><span class="token function">mapToInt</span><span class="token punctuation">(</span>b <span class="token operator">-</span><span class="token operator">></span> b<span class="token punctuation">.</span><span class="token function">getWeight</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+                      <span class="token punctuation">.</span><span class="token function">sum</span><span class="token punctuation">(</span><span class="token punctuation">)</span></code></pre>
+<p>filter，map方法</p>
+<pre class=" language-java"><code class="language-java">list<span class="token punctuation">.</span><span class="token function">stream</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">filter</span><span class="token punctuation">(</span>u <span class="token operator">-</span><span class="token operator">></span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> u<span class="token punctuation">.</span><span class="token function">getId</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">%</span> <span class="token number">2</span> <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">//collect(collectors.tolist())将collect再次转回list</span>
+list<span class="token punctuation">.</span>stream<span class="token punctuation">.</span><span class="token function">map</span><span class="token punctuation">(</span>x <span class="token operator">-</span><span class="token operator">></span> <span class="token punctuation">{</span><span class="token keyword">return</span> x <span class="token operator">*</span> <span class="token number">2</span><span class="token punctuation">;</span><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">collect</span><span class="token punctuation">(</span>collectors<span class="token punctuation">.</span><span class="token function">tolist</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<pre class=" language-java"><code class="language-java">list<span class="token punctuation">.</span><span class="token function">stream</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">filter</span><span class="token punctuation">(</span>u <span class="token operator">-</span><span class="token operator">></span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> u<span class="token punctuation">.</span><span class="token function">getId</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">%</span> <span class="token number">2</span> <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">filter</span><span class="token punctuation">(</span>t <span class="token operator">-</span><span class="token operator">></span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> t<span class="token punctuation">.</span><span class="token function">getAge</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">></span> <span class="token number">24</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">map</span><span class="token punctuation">(</span>m <span class="token operator">-</span><span class="token operator">></span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> m<span class="token punctuation">.</span><span class="token function">getUserName</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">toUpperCase</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">sorted</span><span class="token punctuation">(</span><span class="token punctuation">(</span>o1<span class="token punctuation">,</span>o1<span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> o2<span class="token punctuation">.</span><span class="token function">compareTo</span><span class="token punctuation">(</span>o1<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">.</span>count<span class="token punctuation">.</span><span class="token function">foreach</span><span class="token punctuation">(</span>System<span class="token punctuation">.</span>out<span class="token operator">:</span><span class="token operator">:</span>println<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<script>
         document.querySelectorAll('.github-emoji')
           .forEach(el => {
             if (!el.dataset.src) { return; }
@@ -857,51 +902,51 @@
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="far fa-dot-circle"></i>&nbsp;本篇
-            </div>
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/2020/09/07/lian-shi-bian-cheng-yu-liu-shi-ji-suan/">
+                <a href="/2020/09/08/nio/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/2.jpg" class="responsive-img" alt="链式编程与流式计算基础">
+                        <img src="/medias/featureimages/2.jpg" class="responsive-img" alt="NIO">
                         
-                        <span class="card-title">链式编程与流式计算基础</span>
+                        <span class="card-title">NIO</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            链式编程与流式计算基础四大函数接口
-        document.querySelectorAll('.github-emoji')
-          .forEach(el => {
-            if (!el.data
+                            NIONIO与BIO
+BIO：Blocking IO，阻塞模型，适用于连接数目较小且固定的架构
+为每个连接创建一个线程
+
+NIO：Non-Blocking IO，同步非阻塞，适用于连接数目较多且连接比较短的架构
+专有一个或多个线程服务于众多
                         
                     </div>
                     <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2020-09-07
-                            </span>
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2020-09-08
+                        </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/Java%E9%AB%98%E7%BA%A7/" class="post-category">
-                                    Java高级
+                            <a href="/categories/Java%E5%90%8E%E7%AB%AF/" class="post-category">
+                                    Java后端
                                 </a>
                             
                             
                         </span>
                     </div>
                 </div>
-
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/Java%E9%AB%98%E7%BA%A7-Java%E5%90%8E%E7%AB%AF/">
-                        <span class="chip bg-color">Java高级 Java后端</span>
+                    <a href="/tags/NIO/">
+                        <span class="chip bg-color">NIO</span>
                     </a>
                     
                 </div>
@@ -1158,7 +1203,7 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
             <br>
             
             &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                class="white-color">21.5k</span>&nbsp;字
+                class="white-color">23.6k</span>&nbsp;字
             
             
             

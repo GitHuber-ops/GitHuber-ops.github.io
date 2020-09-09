@@ -585,7 +585,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    2.5k
+                    2.6k
                 </div>
                 
 
@@ -966,7 +966,52 @@ threadPool1<span class="token punctuation">.</span><span class="token function">
 <li><p>DisOldestPolicy：直接抛弃等待时间最久的任务</p>
 </li>
 </ol>
-<h2 id="琐碎的问题"><a href="#琐碎的问题" class="headerlink" title="琐碎的问题"></a>琐碎的问题</h2><ol>
+<h2 id="分支合并框架ForkJoin"><a href="#分支合并框架ForkJoin" class="headerlink" title="分支合并框架ForkJoin"></a>分支合并框架ForkJoin</h2><p>实现</p>
+<pre class=" language-java"><code class="language-java"><span class="token keyword">class</span> <span class="token class-name">MyTask</span> <span class="token keyword">extends</span> <span class="token class-name">RecursiveTask</span><span class="token operator">&lt;</span>Integer<span class="token operator">></span> <span class="token punctuation">{</span>
+
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">final</span> Integer ADJUST_VALUE <span class="token operator">=</span> <span class="token number">10</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">private</span> <span class="token keyword">int</span> begin<span class="token punctuation">;</span>
+    <span class="token keyword">private</span> <span class="token keyword">int</span> end<span class="token punctuation">;</span>
+    <span class="token keyword">private</span> <span class="token keyword">int</span> result<span class="token punctuation">;</span>
+
+    <span class="token keyword">public</span> <span class="token function">MyTask</span><span class="token punctuation">(</span><span class="token keyword">int</span> begin<span class="token punctuation">,</span> <span class="token keyword">int</span> end<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>begin <span class="token operator">=</span> begin<span class="token punctuation">;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>end <span class="token operator">=</span> end<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">protected</span> Integer <span class="token function">compute</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+
+        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token punctuation">(</span>end <span class="token operator">-</span> begin<span class="token punctuation">)</span> <span class="token operator">&lt;=</span> ADJUST_VALUE<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> begin<span class="token punctuation">;</span> i <span class="token operator">&lt;=</span> end<span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                result <span class="token operator">=</span> result <span class="token operator">+</span> i<span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+            <span class="token keyword">int</span> middle <span class="token operator">=</span> <span class="token punctuation">(</span>end <span class="token operator">+</span> begin<span class="token punctuation">)</span> <span class="token operator">/</span> <span class="token number">2</span><span class="token punctuation">;</span>
+            MyTask task01 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">MyTask</span><span class="token punctuation">(</span>begin<span class="token punctuation">,</span> middle<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            MyTask task02 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">MyTask</span><span class="token punctuation">(</span>middle <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">,</span> end<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            task01<span class="token punctuation">.</span><span class="token function">fork</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            task02<span class="token punctuation">.</span><span class="token function">fork</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            result <span class="token operator">=</span> task01<span class="token punctuation">.</span><span class="token function">join</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">+</span> task02<span class="token punctuation">.</span><span class="token function">join</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">return</span> result<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">ForkJoinDemo</span> <span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token keyword">throws</span> ExecutionException<span class="token punctuation">,</span> InterruptedException <span class="token punctuation">{</span>
+        MyTask task <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">MyTask</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">100</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        ForkJoinPool threadPool <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ForkJoinPool</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        ForkJoinTask<span class="token operator">&lt;</span>Integer<span class="token operator">></span> forkJoinTask <span class="token operator">=</span> threadPool<span class="token punctuation">.</span><span class="token function">submit</span><span class="token punctuation">(</span>task<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>forkJoinTask<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        threadPool<span class="token punctuation">.</span><span class="token function">shutdown</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre>
+<h2 id="异步回调"><a href="#异步回调" class="headerlink" title="异步回调"></a>异步回调</h2><h2 id="琐碎的问题"><a href="#琐碎的问题" class="headerlink" title="琐碎的问题"></a>琐碎的问题</h2><ol>
 <li><p>redis：6379<br>MySQL：3306</p>
 </li>
 <li><p>匿名表达式：</p>
@@ -1574,7 +1619,7 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
             <br>
             
             &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                class="white-color">21.5k</span>&nbsp;字
+                class="white-color">23.6k</span>&nbsp;字
             
             
             

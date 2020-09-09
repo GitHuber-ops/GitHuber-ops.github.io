@@ -6,7 +6,7 @@
   <link href="http://mjkbolg.com/atom.xml" rel="self"/>
   
   <link href="http://mjkbolg.com/"/>
-  <updated>2020-09-07T11:21:14.595Z</updated>
+  <updated>2020-09-08T11:54:39.720Z</updated>
   <id>http://mjkbolg.com/</id>
   
   <author>
@@ -17,18 +17,69 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>认知计算前沿与应用</title>
+    <link href="http://mjkbolg.com/2020/09/08/ren-zhi-ji-suan-qian-yan-yu-ying-yong/"/>
+    <id>http://mjkbolg.com/2020/09/08/ren-zhi-ji-suan-qian-yan-yu-ying-yong/</id>
+    <published>2020-09-08T11:32:39.000Z</published>
+    <updated>2020-09-08T11:54:39.720Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1 id=&quot;认知计算前沿与应用&quot;&gt;&lt;a href=&quot;#认知计算前沿与应用&quot; class=&quot;headerlink&quot; title=&quot;认知计算前沿与应用&quot;&gt;&lt;/a&gt;认知计算前沿与应用&lt;/h1&gt;&lt;h2 id=&quot;认知&quot;&gt;&lt;a href=&quot;#认知&quot; class=&quot;headerlink&quot;</summary>
+        
+      
+    
+    
+    
+    <category term="人工智能" scheme="http://mjkbolg.com/categories/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/"/>
+    
+    
+    <category term="基础前沿 人工智能" scheme="http://mjkbolg.com/tags/%E5%9F%BA%E7%A1%80%E5%89%8D%E6%B2%BF-%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>NIO</title>
+    <link href="http://mjkbolg.com/2020/09/08/nio/"/>
+    <id>http://mjkbolg.com/2020/09/08/nio/</id>
+    <published>2020-09-08T03:45:57.000Z</published>
+    <updated>2020-09-09T06:12:06.793Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1 id=&quot;NIO&quot;&gt;&lt;a href=&quot;#NIO&quot; class=&quot;headerlink&quot; title=&quot;NIO&quot;&gt;&lt;/a&gt;NIO&lt;/h1&gt;&lt;h2 id=&quot;NIO与BIO&quot;&gt;&lt;a href=&quot;#NIO与BIO&quot; class=&quot;headerlink&quot;</summary>
+        
+      
+    
+    
+    
+    <category term="Java后端" scheme="http://mjkbolg.com/categories/Java%E5%90%8E%E7%AB%AF/"/>
+    
+    
+    <category term="NIO" scheme="http://mjkbolg.com/tags/NIO/"/>
+    
+  </entry>
+  
+  <entry>
     <title>链式编程与流式计算基础</title>
     <link href="http://mjkbolg.com/2020/09/07/lian-shi-bian-cheng-yu-liu-shi-ji-suan/"/>
     <id>http://mjkbolg.com/2020/09/07/lian-shi-bian-cheng-yu-liu-shi-ji-suan/</id>
     <published>2020-09-07T11:07:39.000Z</published>
-    <updated>2020-09-07T11:21:14.595Z</updated>
+    <updated>2020-09-07T13:22:47.604Z</updated>
     
     
       
       
         
         
-    <summary type="html">&lt;h1 id=&quot;链式编程与流式计算基础&quot;&gt;&lt;a href=&quot;#链式编程与流式计算基础&quot; class=&quot;headerlink&quot; title=&quot;链式编程与流式计算基础&quot;&gt;&lt;/a&gt;链式编程与流式计算基础&lt;/h1&gt;&lt;h2 id=&quot;四大函数接口&quot;&gt;&lt;a href=&quot;#四大函数接口&quot;</summary>
+    <summary type="html">&lt;h1 id=&quot;链式编程与流式计算基础&quot;&gt;&lt;a href=&quot;#链式编程与流式计算基础&quot; class=&quot;headerlink&quot; title=&quot;链式编程与流式计算基础&quot;&gt;&lt;/a&gt;链式编程与流式计算基础&lt;/h1&gt;&lt;p&gt;“集合讲的是数据，流讲的是计算”&lt;/p&gt;
+&lt;h2</summary>
         
       
     
@@ -96,7 +147,7 @@
     <link href="http://mjkbolg.com/2020/09/05/juc/"/>
     <id>http://mjkbolg.com/2020/09/05/juc/</id>
     <published>2020-09-05T12:18:01.000Z</published>
-    <updated>2020-09-07T11:07:01.772Z</updated>
+    <updated>2020-09-08T03:04:54.956Z</updated>
     
     
       
