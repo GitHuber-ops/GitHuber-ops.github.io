@@ -585,14 +585,14 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    3.4k
+                    3.6k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    14 分
+                    15 分
                 </div>
                 
 
@@ -1189,11 +1189,38 @@ pool<span class="token operator">-</span><span class="token number">1</span><spa
 <span class="token punctuation">}</span></code></pre>
 <h2 id="零拷贝"><a href="#零拷贝" class="headerlink" title="零拷贝"></a>零拷贝</h2><p>零拷贝指的是没有CPU拷贝，Java程序中常用的零拷贝有mmap（内存映射）和sendFile</p>
 <p>普通的文件访问需要先从硬盘读入文件到内核空间，然后再将文件由内核空间拷贝到用户空间，需要4次拷贝数据，3次切换工作空间</p>
+<p>mmap适合小数据文件读写，sendFile适合大数据的文件读写</p>
 <h3 id="mmap"><a href="#mmap" class="headerlink" title="mmap"></a>mmap</h3><p>mmap通过内存映射，将文件映射到内核缓冲区，用户可以共享一部分内核数据，这样可以减少拷贝次数，但不可以减少空间切换次数。</p>
 <h3 id="sendFile"><a href="#sendFile" class="headerlink" title="sendFile"></a>sendFile</h3><p>sendFile数据不经过用户态，直接由内核空间进入SocketBuffer，需要3次拷贝数据，2次切换工作空间</p>
 <p>sendFile后经优化，直接将数据由硬盘空间拷贝到kernelBuffer（可以直接修改kernelBuffer中的数据），需要2次拷贝数据，2次切换工作空间。（此时仍需要有一次CPU拷贝kernelBuffer -&gt; socketBuffer，但仅拷贝一些描述信息，并不占用太多的资源）</p>
 <p>零拷贝带来了更少的数据拷贝，更少的上下文切换，也大大减少了文件校验与CPU缓存伪共享</p>
-<h3 id="零拷贝的案例"><a href="#零拷贝的案例" class="headerlink" title="零拷贝的案例"></a>零拷贝的案例</h3><h2 id="琐碎的问题"><a href="#琐碎的问题" class="headerlink" title="琐碎的问题"></a>琐碎的问题</h2><ol>
+<h3 id="零拷贝的案例"><a href="#零拷贝的案例" class="headerlink" title="零拷贝的案例"></a>零拷贝的案例</h3><pre class=" language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">NewIOClient</span> <span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token keyword">throws</span> Exception<span class="token punctuation">{</span>
+
+        SocketChannel socketChannel <span class="token operator">=</span> SocketChannel<span class="token punctuation">.</span><span class="token function">open</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        socketChannel<span class="token punctuation">.</span><span class="token function">connect</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">InetSocketAddress</span><span class="token punctuation">(</span><span class="token string">"localhost"</span><span class="token punctuation">,</span> <span class="token number">7001</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        String fileName <span class="token operator">=</span> <span class="token string">"NewIOClientIn.txt"</span><span class="token punctuation">;</span>
+
+        <span class="token comment" spellcheck="true">//得到一个文件channel</span>
+        FileChannel fileChannel <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">FileInputStream</span><span class="token punctuation">(</span>fileName<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getChannel</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment" spellcheck="true">//准备发送</span>
+        <span class="token keyword">long</span> startTimeMillis <span class="token operator">=</span> System<span class="token punctuation">.</span><span class="token function">currentTimeMillis</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment" spellcheck="true">//在Linux下一次就可完成所有文件的传输</span>
+        <span class="token comment" spellcheck="true">//在Windows下一次最多只能传送8MB</span>
+        <span class="token comment" spellcheck="true">//transferTo底层使用零拷贝</span>
+        <span class="token keyword">long</span> transferCount <span class="token operator">=</span> fileChannel<span class="token punctuation">.</span><span class="token function">transferTo</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> fileChannel<span class="token punctuation">.</span><span class="token function">size</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> socketChannel<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"file sent: "</span> <span class="token operator">+</span> transferCount <span class="token operator">+</span> <span class="token string">" using time: "</span> <span class="token operator">+</span> <span class="token punctuation">(</span>System<span class="token punctuation">.</span><span class="token function">currentTimeMillis</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-</span> startTimeMillis<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        fileChannel<span class="token punctuation">.</span><span class="token function">close</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre>
+<h2 id="AIO"><a href="#AIO" class="headerlink" title="AIO"></a>AIO</h2><p>Java编程常用到的两种模式Reactor和Proactor，Java NIO使用的是Reactor，当有事件触发时，服务器端收到通知，并进行相应的操作。</p>
+<p>Java AIO引入异步通道的概念，采用Proactor，仅当有请求时会由操作系统完成后才会通知服务程序启动线程</p>
+<h2 id="琐碎的问题"><a href="#琐碎的问题" class="headerlink" title="琐碎的问题"></a>琐碎的问题</h2><ol>
 <li>UTF-8中，每个中文字符对应3个字节</li>
 <li>当出现java.nio.channels.IllegalBlockingModeException时可能是因为对应的SocketChannel设置为阻塞模式所导致</li>
 </ol>
@@ -1752,7 +1779,7 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
             <br>
             
             &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                class="white-color">25.4k</span>&nbsp;字
+                class="white-color">35.6k</span>&nbsp;字
             
             
             
